@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>合法多次手动看广告 - 游戏复活</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            background:#111;
+            color:#fff;
+            font-family:"Microsoft Yahei",sans-serif;
+            padding:40px 15px;
+            text-align:center;
+        }
+        .wrap{
+            max-width:420px;
+            margin:0 auto;
+            background:#252525;
+            padding:35px 25px;
+            border-radius:18px;
+        }
+        h2{
+            color:#ffd700;
+            margin-bottom:20px;
+            font-size:22px;
+        }
+        .desc{
+            color:#ccc;
+            line-height:1.8;
+            margin-bottom:30px;
+        }
+        .btn-ad{
+            background:#ffd700;
+            color:#000;
+            border:none;
+            font-size:17px;
+            font-weight:bold;
+            padding:13px 30px;
+            border-radius:10px;
+            cursor:pointer;
+            margin:8px 0;
+        }
+        .btn-ad:disabled{
+            background:#444;
+            color:#888;
+            cursor:not-allowed;
+        }
+        .ad-box{
+            display:none;
+            width:160px;
+            height:600px;
+            margin:20px auto;
+            border:1px solid #555;
+            border-radius:8px;
+            overflow:hidden;
+        }
+        .success-txt{
+            color:#4cd964;
+            font-size:16px;
+            margin-top:20px;
+            display:none;
+        }
+        .tip-note{
+            color:#777;
+            font-size:13px;
+            margin-top:25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <h2>🎮 游戏闯关复活</h2>
+    <div class="desc">
+        闯关失败，手动观看广告即可复活<br>
+        支持多次手动观看，合规安全不封号
+    </div>
+
+    <button class="btn-ad" id="watchBtn">手动观看广告 立即复活</button>
+
+    <div class="ad-box" id="adContainer"></div>
+
+    <div class="success-txt" id="successMsg">✅ 广告观看完成，复活成功！可再次手动观看</div>
+
+    <button class="btn-ad" id="resetBtn" style="display:none;background:#2196F3;color:#fff;">
+        重置状态 再次看广告
+    </button>
+
+    <div class="tip-note">合法手动点击观看，无自动刷量，安全合规</div>
+</div>
+
+<script>
+const watchBtn = document.getElementById('watchBtn');
+const resetBtn = document.getElementById('resetBtn');
+const adContainer = document.getElementById('adContainer');
+const successMsg = document.getElementById('successMsg');
+
+// 广告配置
+const adKey = '2db280bfb03de4ea30246c1e99121525';
+window.atOptions = {
+    'key' : adKey,
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+};
+
+// 观看广告
+watchBtn.addEventListener('click', function(){
+    watchBtn.disabled = true;
+    watchBtn.innerText = '广告加载中...';
+
+    adContainer.style.display = 'block';
+
+    // 动态加载广告脚本
+    let script = document.createElement('script');
+    script.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
+    adContainer.appendChild(script);
+
+    // 流程演示倒计时（仅界面流程，非作弊刷广告）
+    setTimeout(() => {
+        successMsg.style.display = 'block';
+        resetBtn.style.display = 'inline-block';
+        watchBtn.innerText = '本次已观看完成';
+    }, 8000);
+});
+
+// 重置，再次手动看广告（合法多次循环）
+resetBtn.addEventListener('click', function(){
+    // 清空广告容器
+    adContainer.innerHTML = '';
+    adContainer.style.display = 'none';
+    successMsg.style.display = 'none';
+    resetBtn.style.display = 'none';
+
+    // 恢复初始状态，可以重新点击
+    watchBtn.disabled = false;
+    watchBtn.innerText = '手动观看广告 立即复活';
+});
+</script>
+
+</body>
+</html>
