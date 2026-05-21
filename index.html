@@ -47,12 +47,13 @@
             cursor:not-allowed;
         }
         .ad-box{
-            width:100%;
-            max-width:728px;
-            margin:20px auto;
+            min-height:250px;
+            margin:25px auto;
             border:1px solid #555;
             border-radius:8px;
             overflow:hidden;
+            background:#1a1a1a;
+            padding:10px;
         }
         .success-txt{
             color:#4cd964;
@@ -78,11 +79,8 @@
 
     <button class="btn-ad" id="watchBtn">手动观看广告 立即复活</button>
 
-    <!-- 新Adsterra广告位 -->
-    <div class="ad-box" id="adContainer">
-<script async="async" data-cfasync="false" src="https://pl29513832.effectivecpmnetwork.com/bef336e58a646a77f708dd9d2cd44ccd/invoke.js"></script>
-<div id="container-bef336e58a646a77f708dd9d2cd44ccd"></div>
-    </div>
+    <!-- 广告单独容器，点击按钮才加载 -->
+    <div class="ad-box" id="adContainer"></div>
 
     <div class="success-txt" id="successMsg">✅ 广告观看完成，复活成功！可再次手动观看</div>
 
@@ -99,28 +97,37 @@ const resetBtn = document.getElementById('resetBtn');
 const adContainer = document.getElementById('adContainer');
 const successMsg = document.getElementById('successMsg');
 
-// 观看广告
 watchBtn.addEventListener('click', function(){
     watchBtn.disabled = true;
-    watchBtn.innerText = '广告加载中...';
+    watchBtn.innerText = '广告加载中，请稍候...';
 
-    adContainer.style.display = 'block';
+    // 清空旧广告，全新动态加载Adsterra代码
+    adContainer.innerHTML = '';
 
-    // 流程演示倒计时
+    // 加载你的专属广告代码
+    let adScript = document.createElement('script');
+    adScript.async = true;
+    adScript.dataset.cfasync = false;
+    adScript.src = "https://pl29513832.effectivecpmnetwork.com/bef336e58a646a77f708dd9d2cd44ccd/invoke.js";
+    adContainer.appendChild(adScript);
+
+    let adDiv = document.createElement('div');
+    adDiv.id = "container-bef336e58a646a77f708dd9d2cd44ccd";
+    adContainer.appendChild(adDiv);
+
+    // 计时模拟观看完成
     setTimeout(() => {
         successMsg.style.display = 'block';
         resetBtn.style.display = 'inline-block';
-        watchBtn.innerText = '本次已观看完成';
-    }, 8000);
+        watchBtn.innerText = '新的已观看完成';
+    }, 12000);
 });
 
-// 重置，再次手动看广告
+// 重置刷新
 resetBtn.addEventListener('click', function(){
-    // 重置状态
+    adContainer.innerHTML = '';
     successMsg.style.display = 'none';
     resetBtn.style.display = 'none';
-
-    // 恢复初始状态，可以重新点击
     watchBtn.disabled = false;
     watchBtn.innerText = '手动观看广告 立即复活';
 });
