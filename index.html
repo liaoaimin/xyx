@@ -50,7 +50,7 @@
             display:none;
             width:100%;
             max-width:728px;
-            min-height:90px;
+            height:90px;
             margin:20px auto;
             border:1px solid #555;
             border-radius:8px;
@@ -86,7 +86,7 @@
     <div class="success-txt" id="successMsg">✅ 广告观看完成，复活成功！可再次手动观看</div>
 
     <button class="btn-ad" id="resetBtn" style="display:none;background:#2196F3;color:#fff;">
-        q重置状态 再次看广告
+        重置状态 再次看广告
     </button>
 
     <div class="tip-note">合法手动点击观看，无自动刷量，安全合规</div>
@@ -97,33 +97,31 @@ const watchBtn = document.getElementById('watchBtn');
 const resetBtn = document.getElementById('resetBtn');
 const adContainer = document.getElementById('adContainer');
 const successMsg = document.getElementById('successMsg');
-
-// 新广告配置
 const adKey = '7947adfb79d3c97f85550890bbbd3c25';
 
-// 观看广告
 watchBtn.addEventListener('click', function(){
     watchBtn.disabled = true;
     watchBtn.innerText = '广告加载中...';
-
     adContainer.style.display = 'block';
-    // 清空旧广告
     adContainer.innerHTML = '';
 
-    // 载入最新广告代码
+    // 初始化广告参数
     window.atOptions = {
-        'key' : adKey,
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
+        key : adKey,
+        format : 'iframe',
+        height : 90,
+        width : 728,
+        params : {}
     };
 
-    let script = document.createElement('script');
+    // 异步创建广告脚本
+    const script = document.createElement('script');
     script.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
+    script.async = true;
+    script.crossOrigin = "anonymous";
     adContainer.appendChild(script);
 
-    // 倒计时模拟观看完成
+    // 模拟观看结束
     setTimeout(() => {
         successMsg.style.display = 'block';
         resetBtn.style.display = 'inline-block';
@@ -131,15 +129,12 @@ watchBtn.addEventListener('click', function(){
     }, 8000);
 });
 
-// 重置，再次手动看广告
+// 重置页面状态
 resetBtn.addEventListener('click', function(){
-    // 清空广告容器
     adContainer.innerHTML = '';
     adContainer.style.display = 'none';
     successMsg.style.display = 'none';
     resetBtn.style.display = 'none';
-
-    // 恢复初始状态
     watchBtn.disabled = false;
     watchBtn.innerText = '手动观看广告 立即复活';
 });
